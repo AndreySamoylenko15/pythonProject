@@ -10,14 +10,19 @@ class ContactBase(BaseModel):
     birthday: datetime
     extra_data: Optional[str] = None
 
-class ContactCreate(ContactBase):
-    pass
+class UserCreate(ContactBase):
+    email: str
+    password: str
 
-class ContactUpdate(ContactBase):
-    pass
 
-class Contact(ContactBase):
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+
+class User(BaseModel):
     id: int
+    email: str
 
     class Config:
         orm_mode = True
