@@ -1,6 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
+from models import Role
 from typing import Optional
+
 
 class ContactBase(BaseModel):
     first_name: str
@@ -10,19 +12,37 @@ class ContactBase(BaseModel):
     birthday: datetime
     extra_data: Optional[str] = None
 
-class UserCreate(ContactBase):
-    email: str
-    password: str
+class ContactCreate(ContactBase):
+    pass
 
+class ContactUpdate(ContactBase):
+    pass
 
-class UserLogin(BaseModel):
-    email: str
-    password: str
-
-
-class User(BaseModel):
+class Contact(ContactBase):
     id: int
-    email: str
 
     class Config:
         orm_mode = True
+
+
+class UserSchema(BaseModel):
+    username: str = Field(min_length=3, max_length=50)
+    email: EmailStr
+    password: str = Field(min_length=6, max_length=8)
+
+
+class UserResponse(BaseModel):
+    id: int = 1
+    username: str
+    email: EmailStr
+    avatar: str
+    role: Role
+
+    class Config:
+        from_attributes = True
+
+
+class TokenSchema(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"

@@ -2,13 +2,9 @@ from logging.config import fileConfig
 from sqlalchemy import MetaData
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from db import Base
+from models import Base
 from alembic import context
-from sqlalchemy.ext.declarative import declarative_base
-
-
-
-metadata = MetaData()
+from db import SQLALCHEMY_DATABASE_URL
 
 
 
@@ -26,6 +22,9 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
+metadata = MetaData(schema="public")
+config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
